@@ -292,6 +292,8 @@ consoleinit(void)
 
   devsw[CONSOLE].write = consolewrite;
   devsw[CONSOLE].read = consoleread;
+  devsw[CONSOLE].open = 0;
+  devsw[CONSOLE].close = 0;
   cons.locking = 1;
 
   ioapicenable(IRQ_KBD, 0);

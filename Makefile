@@ -27,12 +27,12 @@ OBJS = \
 	uart.o\
 	vectors.o\
 	vm.o\
+	klog.o\
 
 # Cross-compiling (e.g., on Mac OS X)
-# TOOLPREFIX = i386-jos-elf
 
 # Using native tools (e.g., on X86 Linux)
-#TOOLPREFIX = 
+TOOLPREFIX = i386-elf-
 
 # Try to infer the correct TOOLPREFIX if not set
 ifndef TOOLPREFIX
@@ -182,6 +182,9 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
+	_logger\
+	_mknod\
+	_syslogd\
 
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)

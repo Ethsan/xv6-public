@@ -314,6 +314,16 @@ sys_open(void)
     }
   }
 
+  if(ip->type == T_DEV){
+    if(ip->major >= 0 && ip->major < NDEV && devsw[ip->major].open != 0) {
+      if (devsw[ip->major].open(ip, omode) != 0) {
+        iunlockput(ip);
+        end_op();
+        return -1;
+      }
+    }
+  }
+
   if((f = filealloc()) == 0 || (fd = fdalloc(f)) < 0){
     if(f)
       fileclose(f);

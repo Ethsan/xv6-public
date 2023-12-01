@@ -9,6 +9,7 @@
 #include "spinlock.h"
 #include "sleeplock.h"
 #include "file.h"
+#include "stat.h"
 
 struct devsw devsw[NDEV];
 struct {
@@ -65,6 +66,7 @@ fileclose(struct file *f)
     release(&ftable.lock);
     return;
   }
+
   ff = *f;
   f->ref = 0;
   f->type = FD_NONE;
@@ -74,6 +76,10 @@ fileclose(struct file *f)
     pipeclose(ff.pipe, ff.writable);
   else if(ff.type == FD_INODE){
     begin_op();
+    if (ff.ip->type == T_DEV) {
+      if ( ff.ip->major >= 0 && ff.ip->major < NDEV && devsw[ff.ip->major].close)
+        devsw[ff.ip->major].close(ff.ip, &ff);
+    }
     iput(ff.ip);
     end_op();
   }

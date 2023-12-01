@@ -30,8 +30,11 @@ struct inode {
 struct devsw {
   int (*read)(struct inode*, char*, int);
   int (*write)(struct inode*, char*, int);
+  int (*open)(struct inode*, int omode);
+  void (*close)(struct inode*, struct file*);
 };
 
 extern struct devsw devsw[];
 
 #define CONSOLE 1
+#define KLOG 2

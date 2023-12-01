@@ -37,3 +37,7 @@ void* memset(void*, int, uint);
 void* malloc(uint);
 void free(void*);
 int atoi(const char*);
+
+void openlog(char *sender);
+void closelog(void);
+void syslog(int prio, char *msg);
